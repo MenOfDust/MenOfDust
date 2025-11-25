@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.png">  
+    <link rel="stylesheet" href="styles/normalize.css" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="scripts/loadingTime.js" defer></script>
+    <script type="module" src="scripts/gameSetup.js" defer></script>
+    <script type="module" src="scripts/mainGame.js" defer></script>
+    <!-- NOTE: don't define this as module, link breaks if you do -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <title>Men Of Dust</title>
+</head>
+<body>
+  
+      <!-- https://www.w3schools.com/howto/howto_js_draggable.asp -->
+  
+    <div id="loadingBox">
+      <div class="typewriter">
+        <p> Loading </p>
+      </div>
+    </div>
+
+    <div id="gameBox">
+
+   
+     <div id="citySidebar"></div>
+      
+      <!-- <div class="topTicker-container"> -->
+        <div id="resourceChartBox" class="dragBox">
+          <div id="resourceChartHeader" class="dragHeader">Resource Chart</div>
+          <canvas id="resourceChart"></canvas>
+        </div>
+      <!-- <h1>hello world</h1> -->
+      <!-- <div class="topTicker-content">
+            <p>Default top ticker text. You should not be seeing this.</p>/p>
+            <p>Default top ticker text. You should not be seeing this.</p>
+          </div>
+        </div> -->
+    <!-- I am so sad this had to be cut, draggable boxes were the coolest feature. -->
+        <!-- <div id="choiceBox" class="dragBox" data-default-vh="40"> -->
+        <!-- Include a header DIV with the same name as the draggable DIV, followed by "header" -->
+            <!-- <div id="choiceBoxHeader" class="dragHeader">Click here to move</div>
+              <ul id="choiceBoxList">
+              </ul>
+        </div> -->
+
+        <div id="nextTurnBox"  class="dragBox" >
+          <button id="nextTurnBtn">Next Turn</button>
+        </div>
+
+        <!-- Confirmation Modal -->
+                <!-- please god stop breaking, it's the one thing I really really need to work every time -->
+        <div id="confirmModal" class="modal hidden">
+          <div class="modal-content">
+            <h2>Proceed to Next Turn?</h2>
+            <p>All ongoing constructions and events will advance one turn.</p>
+            <div class="modal-actions">
+              <button id="confirmYes">Confirm</button>
+              <button id="confirmNo">Cancel</button>
+            </div>
+          </div>
+        </div>
+        
+
+ 
+
+
+    </div>
+  </div>
+</body>
+</html>

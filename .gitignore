@@ -1,0 +1,56 @@
+# ======================================
+# Personal files: ignore everything in common personal folders
+# ======================================
+C:/Users/*/Desktop/*
+C:/Users/*/Documents/*
+C:/Users/*/Downloads/*
+
+# Keep the repo folder itself
+!C:/Users/*/Documents/*/*/MenOfDust
+ 
+
+# ======================================
+# System files
+# ======================================
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+*.lnk
+
+# ======================================
+# IDE / Editor configs
+# ======================================
+.vscode/
+.idea/
+*.iml
+
+# ======================================
+# Node / JavaScript
+# ======================================
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# ======================================
+# Python
+# ======================================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+env/
+venv/
+*.env
+
+# ======================================
+# Logs & temporary files
+# ======================================
+*.log
+*.tmp
+*.bak
+*.swp
+
+# ======================================
+# Misc
+# ======================================
+.DS_Store  # macOS files, in case of cross-platform
