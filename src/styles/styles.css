@@ -190,15 +190,17 @@ ul{
 }
 
 #nextTurnBox {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  position: absolute;
+  top: 80vh;
+  left: 85vw;
   background: #222;
   border: 2px solid #555;
   border-radius: 12px;
   padding: 1rem;
   box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  z-index: 9000;
 }
+
 
 #nextTurnBtn {
   background-color: #0078ff;

@@ -169,6 +169,7 @@ function createBuildingTable(city) {
     mothBox.style.cursor = 'pointer';
     mothBox.style.color = 'white';
     mothBox.style.fontWeight = 'bold';
+    mothBox.style.margin = '0 auto';
 
     function updateMothBox() {
       mothBox.style.background = b.mothballed ? 'red' : 'green';
