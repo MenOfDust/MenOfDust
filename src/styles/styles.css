@@ -1,480 +1,349 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/*Vaguely Fallout New Vegas style colour palette.*/
+/* Custom color variables for compatibility */
+:root {
+  --f_blue: #2ecfff;
+  --light_amber: #f5deb3;
+  --f_amber: #ffa500;
+  --f_green: #1bff80;
+  --f_white: #c0ffff;
 
-/* im aware the colors are supposed to all be in one consistent data format but i am tired */
-
-:root{
-   --f_blue:	#2ecfff;
-   --light_amber:#f5deb3;
-   --f_amber:#ffa500;
-   --f_green:#1bff80;
-   --f_white:	#c0ffff;
+  /* Scalable layout variables */
+  --game-scale: 1;
+  --sidebar-width: 24rem; /* 384px */
+  --ui-spacing: 1rem;
+  --ui-margin: 3rem;
 }
 
-
-.header{
-  background-color: var(--light_amber);
+/* Responsive scaling for zoom levels */
+@media (max-width: 1200px) {
+  :root {
+    --game-scale: 0.9;
+    --sidebar-width: 20rem;
+  }
 }
 
-/* source for typing animation: https://css-tricks.com/snippets/css/typewriter-effect/ */
-
-/* Google Fonts */
-
-body {
-  /* background: #333; */
-  border: none;
-  display: flex;
-  justify-content: center;
+@media (max-width: 900px) {
+  :root {
+    --game-scale: 0.8;
+    --sidebar-width: 18rem;
+    --ui-margin: 2rem;
+  }
 }
 
-ul{
-  list-style: none;
+@media (max-width: 600px) {
+  :root {
+    --game-scale: 0.7;
+    --sidebar-width: 16rem;
+    --ui-margin: 1rem;
+  }
 }
 
-#loadingBox{
-  position: relative;
-  top: 40vh;
+/* Game-specific styles that don't fit Tailwind utilities */
+.typewriter p {
+  overflow: hidden;
+  border-right: .15em solid var(--f_amber);
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: .15em;
+  animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+  font-size: 15vh;
 }
 
-#gameBox{
-  display: none;
+.borderBox {
+  background-color: #e2e2df;
+  background-blend-mode: difference;
+  border: #000000;
+  border-style: solid;
+  border-width: 0.5vw;
 }
 
-#gameBox.default{
-  display:flex;
+/* Scalable Game Layout */
+#gameBox.default {
+  display: grid;
+  grid-template-columns: 1fr var(--sidebar-width);
+  grid-template-rows: 1fr;
   position: relative;
   width: 100%;
   height: 100vh;
   background-color: #1a1a1a;
   overflow: hidden;
+  transform: scale(var(--game-scale));
+  transform-origin: top left;
+  transition: transform 0.2s ease;
 }
 
-.typewriter p {
-
-  overflow: hidden; /* Ensures the content is not revealed until the animation */
-  border-right: .15em solid orange; /* The typwriter cursor */
-  white-space: nowrap; /* Keeps the content on a single line */
-  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-  letter-spacing: .15em; /* Adjust as needed */
-  animation: 
-    typing 3.5s steps(40, end),
-    blink-caret .75s step-end infinite;
-  font-size: 15vh;
+/* Ensure text scales appropriately with zoom */
+* {
+  box-sizing: border-box;
 }
 
-.borderBox{
-    background-color: #e2e2df;
-    background-blend-mode:difference;
-    border: #000000;
-    border-style: solid;
-    border-width: 0.5vw;
+/* Better text scaling for different zoom levels */
+@media (max-width: 1200px) {
+  body {
+    font-size: 14px;
+  }
 }
 
+@media (max-width: 900px) {
+  body {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 12px;
+  }
+}
+
+/* Prevent layout shifts during zoom transitions */
+#gameBox.default {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#gameBox.default > * {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ensure draggable elements maintain proper stacking during zoom */
+.dragBox {
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Draggable elements */
+.dragBox {
+  @apply absolute cursor-move;
+}
+
+.dragHeader {
+  @apply cursor-move;
+}
+
+/* Choice Box */
 #choiceBoxHeader {
-  padding: 3vh;
-  cursor: move;
-  z-index: 10;
-  background-color: #2196F3;
-  color: #fff;
+  @apply py-12 cursor-move bg-blue-500 text-white;
 }
 
 #choiceBox {
-  position: absolute;
-  z-index: 9;
-  background-color: #e43939;
-  border: 0.3vw solid #d3d3d3;
-  text-align: center;
-  display: none; /* Hidden by default, shown only when needed */
-
+  @apply absolute z-10 bg-red-500 border-2 border-gray-300 text-center hidden;
   left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%) scale(var(--game-scale));
+  transform-origin: center;
 }
 
-#choiceBoxList{
-  display: flex;
-  flex-direction: column;
-  padding: 0 0;
-  margin: 0 0;
+#choiceBoxList {
+  @apply flex flex-col p-0 m-0;
 }
 
-
-
-/* add something to force the top ticker to be sticky at the top. */
+/* Top Ticker */
 .topTicker-container {
-  width: 100%; /* Or a specific width */
-  overflow: hidden; /* Hides content outside the container */
-  white-space: nowrap; /* Prevents text from wrapping */
-  position: relative; /* Needed for positioning child elements */
-  height: 50px; /* Or desired height */
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  height: 50px;
 }
 
-/* instead of a modern stock ticker it would be nice to have the text appear character by character like a typewriter */
-
-.topTicker-content{
-  display: inline-block; /* Allows content to be treated as a single line */
-  position: absolute; /* Positions content relative to the container */
-  animation: scroll-left 30s linear infinite; /* Animation properties */
+.topTicker-content {
+  display: inline-block;
+  position: absolute;
+  animation: scroll-left 30s linear infinite;
 }
 
 .topTicker-content p {
-  display: inline-block; /* Ensures paragraphs stay in line */
-  margin: 0; /* Remove default paragraph margins */
-  padding-right: 20px; /* Adjust spacing between repeated text */
+  display: inline-block;
+  margin: 0;
+  padding-right: 20px;
 }
 
-@keyframes scroll-left {
-  0% { transform: translateX(100%); } /* Starts off-screen to the right */
-  100% { transform: translateX(-100%); } /* Moves completely off-screen to the left */
-}
-
-/* The typing effect */
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
-}
-
-/* The typewriter cursor effect */
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: var(--f_amber) }
-}
-
-
-#resourceChart{
+/* Resource Chart */
+#resourceChart {
   display: none;
 }
 
 #chartHeader {
-  cursor: move;
-  background-color: #2c3e50;
-  color: white;
-  padding: 8px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  font-weight: bold;
-  user-select: none;
+  @apply cursor-move bg-gray-700 text-white p-2 rounded-t-lg font-bold select-none;
 }
 
-#resourceChart.defaultPos{
+#resourceChart.defaultPos {
   display: block;
   flex: 1;
-  /* top:0;
-  left:0; */
-  width:100%;
-  /* height: calc(100% - 36px); */
-  /* background-color: lightblue; */
 }
 
 #resourceChartHeader {
-  cursor: move;
-  background-color: #2c3e50;
-  color: white;
-  padding: 8px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  font-weight: bold;
+  @apply cursor-move bg-gray-700 text-white p-2 rounded-t-lg font-bold;
 }
 
 #resourceChartBox {
-  position: absolute;
+  @apply absolute flex flex-col bg-white border-2 border-gray-600 rounded-lg shadow-2xl;
+  /* Fixed position relative to viewport, with margin for sidebar */
   top: 10px;
   left: 10px;
   width: 40vw;
   height: 90vh;
-  display: flex;
-  flex-direction: column;
-  background-color: #fff;
-  border: 2px solid #444;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  /* Ensure it doesn't overlap sidebar at any zoom level */
+  max-width: calc(100vw - var(--sidebar-width) - 20px);
   z-index: 3000;
 }
 
+/* Next Turn Box */
 #nextTurnBox {
-  position: absolute;
-  top: 80vh;
-  left: 85vw;
-  background: #222;
-  border: 2px solid #555;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  @apply absolute bg-gray-800 border-2 border-gray-500 rounded-xl p-4 shadow-2xl;
+  bottom: 20px;
+  right: 20px;
   z-index: 9000;
 }
 
+#nextTurnBtn {
+  @apply bg-blue-600 text-white border-none rounded-lg py-3 px-6 text-base font-bold cursor-pointer transition-colors duration-200 hover:bg-blue-700;
+}
+
+/* Turn Counter Box */
 #turnCounterBox {
-  position: absolute;
-  top: 60vh;
-  left: 85vw;
-  background: #222;
-  border: 2px solid #555;
-  border-radius: 12px;
-  padding: 0.5rem;
-  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  @apply absolute bg-gray-800 border-2 border-gray-500 rounded-xl p-2 shadow-2xl text-center;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
   z-index: 8000;
   min-width: 120px;
-  text-align: center;
 }
 
 #turnCounterBoxHeader {
-  cursor: move;
-  background-color: #2c3e50;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 0.9rem;
-  margin-bottom: 8px;
+  @apply cursor-move bg-gray-700 text-white p-1 rounded text-sm font-bold mb-2;
 }
 
 #turnCounterDisplay {
-  color: #e0e0e0;
+  @apply text-gray-200;
 }
 
 .turn-number {
-  font-size: 1.2rem;
-  font-weight: bold;
+  @apply text-xl font-bold;
   color: var(--f_amber);
 }
 
 #currentTurn {
+  @apply text-2xl;
   color: var(--f_white);
-  font-size: 1.5rem;
 }
 
-
-#nextTurnBtn {
-  background-color: #0078ff;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-#nextTurnBtn:hover {
-  background-color: #005fcc;
-}
-
+/* Modal */
 #confirmModal {
-  position: fixed; /* keep full viewport overlay */
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: none; /* hidden by default */
-  justify-content: center;
-  align-items: center;
-  z-index: 13000; /* Highest priority - above goal UI */
+  @apply fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center;
+  display: none;
+  z-index: 13000;
 }
 
 #confirmModal.show {
-  display: flex; /* only show when JS toggles 'show' */
+  @apply flex;
   animation: fadeIn 0.2s ease-in;
 }
-/* I'm not sure why I need !important - not sure what I'm overriding here. But it's definitely overriding something, and I couldn't detect any actual bugs. */
+
 .hidden {
-  display: none !important;   
-  /* display: none; */
+  display: none !important;
 }
 
 .modal-content {
-  background: #111;
-  color: #fff;
-  padding: 2rem;
-  border-radius: 12px;
-  text-align: center;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 0 25px rgba(0,0,0,0.5);
+  @apply bg-gray-900 text-white p-8 rounded-xl text-center max-w-md w-full mx-4 shadow-2xl;
 }
+
 .modal-actions {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 1.5rem;
+  @apply flex justify-around mt-6;
 }
 
 .modal-actions button {
-  background-color: #0078ff;
-  border: none;
-  color: #ffffff;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s ease; 
-
+  @apply bg-blue-600 border-none text-white py-3 px-6 rounded-lg font-bold cursor-pointer transition-colors duration-200 hover:bg-blue-700;
 }
 
-.modal-actions button:hover {
-  background-color: #005fcc;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* ============================================
-   SIDEBAR (AAA, No blue)
-=============================================== */
+/* Sidebar */
 #citySidebar {
-  position: fixed;
-  top: 0;
+  @apply fixed top-0 h-full overflow-y-auto p-4 shadow-2xl font-roboto;
   right: 0;
-  width: 380px;
-  height: 100%;
-  background: #b89090;   /* dark neutral */
-  color: #FFFFFF;        /* AAA contrast */
+  width: var(--sidebar-width);
+  background: #b89090;
+  color: #FFFFFF;
   border-left: 2px solid #3C3C3C;
-  overflow-y: auto;
-  padding: 1rem;
-  box-shadow: -6px 0 20px rgba(0,0,0,0.6);
-  font-family: Roboto, sans-serif;
+  transform: scale(var(--game-scale));
+  transform-origin: top right;
 }
 
-/* ============================================
-   CITY PANEL
-=============================================== */
+/* City Panel */
 .city-panel {
-  background: #FFFFFF;    /* pure white */
-  border: 1px solid #555555;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  color: #000000;         /* AAA */
+  @apply bg-white border border-gray-500 rounded-lg p-4 mb-4 text-black;
 }
 
-/* ============================================
-   HEADER
-=============================================== */
 .city-header {
-  background: #3C3C3C;  /* medium neutral grey */
-  color: #FFFFFF;       /* AAA on grey */
-  padding: 0.5rem 1rem 0.2rem 1rem;
-  border-radius: 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: bold;
+  @apply bg-gray-600 text-white p-3 rounded-lg flex justify-between items-center font-bold;
 }
 
 .city-title {
-    margin: 0 0 1rem 0;             /* more space BELOW the title */
-    padding-bottom: 0.25rem;        /* reduces blank space *inside* the box at the bottom */
-
-    /* Subtle 3D effect */
-    text-shadow: 0 1px 2px rgba(0,0,0,0.35);
-    transform: translateZ(0);       /* helps rendering look crisp */
-
-    /* If the header box has a background, adding this enhances separation */
-    border-bottom: 1px solid rgba(255,255,255,0.12);
+  @apply m-0 mb-4;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
 }
 
-.city-header h3 { margin: 0; font-size: 1rem; }
+.city-header h3 {
+  @apply m-0 text-base;
+}
 
-/* ============================================
-   TABLE (AAA, neutral-only)
-=============================================== */
 .city-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #FFFFFF;
-  color: #000000;
-  table-layout: fixed;
-  font-family: Roboto, sans-serif;
+  @apply w-full border-collapse bg-white text-black table-fixed font-roboto;
 }
 
-/* Header row */
 .city-table th {
-  background: #3C3C3C;     /* Same as header */
-  color: #FFFFFF;
-  padding: 10px 14px;
-  border: 1px solid #555555;
-  font-weight: 700;
+  @apply bg-gray-600 text-white p-3 border border-gray-500 font-bold;
 }
 
-/* Cells */
 .city-table td {
-  padding: 8px 14px;
-  border: 1px solid #555555;
+  @apply p-2 border border-gray-500;
 }
 
-/* Column widths */
-.city-table th:nth-child(1),
-.city-table td:nth-child(1) { width: 45%; }
+.city-table th:nth-child(1), .city-table td:nth-child(1) {
+  width: 45%;
+}
 
-.city-table th:nth-child(2),
-.city-table td:nth-child(2) {
+.city-table th:nth-child(2), .city-table td:nth-child(2) {
   width: 40%;
   white-space: nowrap;
 }
 
-.city-table th:nth-child(3),
-.city-table td:nth-child(3) { width: 15%; text-align: center; }
+.city-table th:nth-child(3), .city-table td:nth-child(3) {
+  @apply w-4 text-center;
+}
 
-/* Zebra rows */
 .city-table tr:nth-child(even) {
-  background: #F5F5F5;
+  @apply bg-gray-100;
 }
 
-/* Hover (soft, neutral) */
 .city-table tr:hover {
-  background: #E8E8E8;
+  @apply bg-gray-50;
 }
 
-/* ============================================
-   MOTHBALL TOGGLE
-=============================================== */
 .mothbox {
-  width: 1.6rem;
-  height: 1.6rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 3px;
-  font-weight: bold;
-  color: white;
-  cursor: pointer;
+  @apply w-4 h-4 flex items-center justify-center rounded text-white font-bold cursor-pointer;
 }
 
-/* ============================================
-   CONSTRUCTION PANEL
-=============================================== */
 .construction-row {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-  align-items: center;
+  @apply flex gap-2 mt-3 items-center;
 }
 
 .construction-row select {
-  flex: 1;
-  background: #FFFFFF;
-  color: #000000;
-  padding: 0.4rem;
-  border-radius: 6px;
-  border: 1px solid #555555;
+  @apply bg-white text-black p-1 rounded border border-gray-500 flex-1;
 }
 
 .construction-row button {
-  background: #3C3C3C;
-  color: #FFFFFF;
-  border: none;
-  padding: 0.4rem 0.6rem;
-  border-radius: 6px;
-  cursor: pointer;
+  @apply bg-gray-600 text-white border-none p-1 rounded cursor-pointer hover:bg-gray-700;
 }
 
-.construction-row button:hover {
-  background: #4A4A4A;
-}
-
-/* Goal System Styles - Highest Priority Layer */
+/* Goal System Styles */
 .goal-message {
   animation: slideIn 0.5s ease-out;
-  z-index: 12000 !important; /* Above everything else */
+  z-index: 12000 !important;
   position: relative;
 }
 
@@ -486,7 +355,6 @@ ul{
   border-left: 4px solid #ff4444;
 }
 
-/* Ensure choiceBox has highest priority when showing goals */
 #choiceBox.goal-active {
   z-index: 11000 !important;
 }
@@ -495,28 +363,17 @@ ul{
   z-index: 11001 !important;
 }
 
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
 .goal-option:hover {
-  background: #3a3a3a !important;
+  @apply bg-gray-600;
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
--
+
 .active-goal {
-  transition: all 0.2s ease;
+  @apply transition-all duration-200;
 }
 
 .active-goal:hover {
-  background: #3a3a3a;
+  @apply bg-gray-600;
   transform: translateY(-1px);
 }

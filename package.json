@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build-css": "tailwindcss -i ./src/styles/styles.css -o ./src/styles/output.css --watch",
+    "build": "tailwindcss -i ./src/styles/styles.css -o ./src/styles/output.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/MenOfDust/MenOfDust/issues"
   },
-  "homepage": "https://github.com/MenOfDust/MenOfDust#readme"
+  "homepage": "https://github.com/MenOfDust/MenOfDust#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  }
 }

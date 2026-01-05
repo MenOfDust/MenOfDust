@@ -89,6 +89,72 @@ function wireNextTurnModal() {
   });
 }
 
+// Zoom scaling functionality to preserve layout at different zoom levels
+// This system detects browser zoom changes and adjusts the game scale to maintain
+// relative positioning and readability across different zoom levels (50% to 200%+)
+function initZoomScaling() {
+  let currentZoom = 1;
+  let baseFontSize = 16; // Base font size in pixels
+
+  function updateZoomScale() {
+    // Detect zoom level by comparing actual font size to base font size
+    const testElement = document.createElement('div');
+    testElement.style.cssText = 'position:absolute;visibility:hidden;font-size:1em;width:1em;height:1em;overflow:hidden;';
+    document.body.appendChild(testElement);
+
+    const emWidth = testElement.offsetWidth;
+    document.body.removeChild(testElement);
+
+    // Calculate zoom level (assuming 16px base font size)
+    const detectedZoom = emWidth / baseFontSize;
+
+    // Only update if zoom changed significantly (prevent excessive updates)
+    if (Math.abs(detectedZoom - currentZoom) > 0.05) {
+      currentZoom = detectedZoom;
+
+      // Calculate appropriate scale factor
+      // At 100% zoom: scale = 1
+      // At 200% zoom: scale = 0.8 (to compensate)
+      // At 50% zoom: scale = 1.2 (to compensate)
+      let scaleFactor = 1 / Math.sqrt(currentZoom);
+
+      // Clamp scale factor to reasonable bounds
+      scaleFactor = Math.max(0.5, Math.min(2, scaleFactor));
+
+      // Update CSS custom property
+      document.documentElement.style.setProperty('--game-scale', scaleFactor);
+
+      // Update UI spacing based on zoom
+      const spacingFactor = Math.max(0.5, Math.min(2, 1 / currentZoom));
+      document.documentElement.style.setProperty('--ui-spacing', `${spacingFactor}rem`);
+      document.documentElement.style.setProperty('--ui-margin', `${spacingFactor * 3}rem`);
+
+      console.log(`Zoom detected: ${(currentZoom * 100).toFixed(1)}%, Scale factor: ${scaleFactor.toFixed(2)}`);
+    }
+  }
+
+  // Initial update
+  updateZoomScale();
+
+  // Listen for zoom changes
+  window.addEventListener('resize', updateZoomScale);
+
+  // Also listen for browser zoom changes (less reliable but better than nothing)
+  let lastZoomCheck = Date.now();
+  const zoomCheckInterval = setInterval(() => {
+    const now = Date.now();
+    if (now - lastZoomCheck > 500) { // Check every 500ms
+      updateZoomScale();
+      lastZoomCheck = now;
+    }
+  }, 100);
+
+  // Clean up interval on page unload
+  window.addEventListener('beforeunload', () => {
+    clearInterval(zoomCheckInterval);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initCharts();
   initModal();
@@ -98,6 +164,8 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCharts();
   // Initialize turn counter
   turnCounter.initialize();
+  // Initialize zoom scaling
+  initZoomScaling();
 });
 
 

@@ -3,7 +3,7 @@
 <head>
     <link rel="icon" type="image/x-icon" href="../images/favicon.png">  
     <link rel="stylesheet" href="styles/normalize.css" />
-    <link rel="stylesheet" href="styles/styles.css" />
+    <link rel="stylesheet" href="styles/output.css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="module" src="scripts/loadingTime.js" defer></script>
@@ -60,13 +60,13 @@
 
         <!-- Confirmation Modal -->
                 <!-- please god stop breaking, it's the one thing I really really need to work every time -->
-        <div id="confirmModal" class="modal hidden">
-          <div class="modal-content">
-            <h2>Proceed to Next Turn?</h2>
-            <p>All ongoing constructions and events will advance one turn.</p>
-            <div class="modal-actions">
-              <button id="confirmYes">Confirm</button>
-              <button id="confirmNo">Cancel</button>
+        <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center hidden" style="z-index: 13000;">
+          <div class="modal-content bg-gray-900 text-white p-8 rounded-xl text-center max-w-md w-full mx-4 shadow-2xl">
+            <h2 class="text-xl font-bold mb-4">Proceed to Next Turn?</h2>
+            <p class="mb-6">All ongoing constructions and events will advance one turn.</p>
+            <div class="modal-actions flex justify-around">
+              <button id="confirmYes" class="bg-blue-600 border-none text-white py-3 px-6 rounded-lg font-bold cursor-pointer transition-colors duration-200 hover:bg-blue-700">Confirm</button>
+              <button id="confirmNo" class="bg-gray-600 border-none text-white py-3 px-6 rounded-lg font-bold cursor-pointer transition-colors duration-200 hover:bg-gray-700">Cancel</button>
             </div>
           </div>
         </div>
