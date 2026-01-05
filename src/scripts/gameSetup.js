@@ -10,6 +10,7 @@ import { cities } from './campaign/cities.js';
 import { simulateTurn, commitTurn} from './campaign/turnSystem.js';
 import { showActiveGoals } from './ui/goalUI.js';
 import { updateAllCityCharts } from './ui/cityCharts.js';
+import { turnCounter } from './campaign/turnCounter.js';
 
   document.querySelectorAll('.dragBox').forEach(box => {
     makeDraggable(box);
@@ -92,6 +93,8 @@ document.addEventListener("DOMContentLoaded", () => {
   wireNextTurnModal();
   updateAllCityCharts();
   updateCharts();
+  // Initialize turn counter
+  turnCounter.initialize();
 });
 
 

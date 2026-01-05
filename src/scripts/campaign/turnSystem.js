@@ -3,6 +3,7 @@ import { buildingsList } from "./buildings.js";
 import { resources } from "./resources.js";
 import { cities } from "./cities.js";
 import { goalSystem } from "./goalSystem.js";
+import { turnCounter } from "./turnCounter.js";
 
 let checksum = 0;
 
@@ -52,6 +53,9 @@ export function simulateTurn() {
 
   // 8. Advance goal system turn counter and check goals
   goalSystem.advanceTurn();
+
+  // 9. Advance the turn counter display
+  turnCounter.nextTurn();
 
 
   // ..does this even work?
