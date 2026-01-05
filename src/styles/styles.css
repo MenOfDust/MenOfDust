@@ -84,6 +84,7 @@ ul{
   background-color: #e43939;
   border: 0.3vw solid #d3d3d3;
   text-align: center;
+  display: none; /* Hidden by default, shown only when needed */
 
   left: 50%;
   transform: translateX(-50%);
