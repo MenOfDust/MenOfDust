@@ -3,18 +3,6 @@ import { simulateTurn, commitTurn } from "../campaign/turnSystem.js";
 import { updateCharts } from "./netChart.js";
 
 export function initModal() {
-  const btn = document.getElementById("nextTurnBtn");
-  const modal = document.getElementById("confirmModal");
-  const yes = document.getElementById("confirmYes");
-  const no = document.getElementById("confirmNo");
-
-  btn.addEventListener("click", () => modal.classList.remove("hidden"));
-  no.addEventListener("click", () => modal.classList.add("hidden"));
-
-  yes.addEventListener("click", () => {
-    modal.classList.add("hidden");
-    const delta = simulateTurn();
-    commitTurn();  // Commit changes after simulation
-    updateCharts();
-  });
+  // Modal event listeners are now handled by wireNextTurnModal() in gameSetup.js
+  // This function is kept for future modal initialization needs
 }

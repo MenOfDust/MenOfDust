@@ -7,7 +7,7 @@ class GoalSystem {
     this.activeGoals = [];
     this.completedGoals = [];
     this.failedGoals = [];
-    this.turnCounter = 0;
+    this.turnCounter = 1; // Start at turn 1 to match display
   }
 
   /**

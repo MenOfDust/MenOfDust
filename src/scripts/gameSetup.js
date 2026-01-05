@@ -68,15 +68,18 @@ function wireNextTurnModal() {
   const confirmNo = document.getElementById('confirmNo');
 
   nextTurnBtn.addEventListener('click', () => {
+    modal.classList.remove('hidden');
     modal.classList.add('show');
   });
 
   confirmNo.addEventListener('click', () => {
     modal.classList.remove('show');
+    modal.classList.add('hidden');
   });
 
   confirmYes.addEventListener('click', () => {
     modal.classList.remove('show');
+    modal.classList.add('hidden');
     // Run one global turn
     simulateTurn();
     //Actually save the changes
@@ -106,23 +109,8 @@ const resourceChart=document.getElementById('resourceChart');
 
 // --- Listener Containment Zone ---
 
-nextTurnBtn.addEventListener('click', () => {
-  modal.classList.remove('hidden');
-});
-
-const modal = document.getElementById('confirmModal');
-nextTurnBtn.addEventListener('click', () => {
-  modal.classList.add('show');
-});
-
-confirmNo.addEventListener('click', () => {
-  modal.classList.remove('show');
-});
-
-confirmYes.addEventListener('click', () => {
-  modal.classList.remove('show');
-  simulateTurn();
-});
+// These duplicate listeners have been removed to prevent multiple simulateTurn() calls
+// The wireNextTurnModal() function handles all next turn logic properly
 
 // UI helper functions
 
