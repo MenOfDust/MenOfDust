@@ -23,6 +23,8 @@ import { updateAllCityCharts } from './ui/cityCharts.js';
 
 //     // Again without context, choose whether to throw an Abbot out of a window or deploy white phosphorus agaisnt the mob.
 
+//"you, in the dark - disperse back to your homes."
+
 //     let choice1 =document.createElement('button');
 //     choice1.textContent="Call up the relic aircraft - bomb the crowd with white phosphorus."
 //     choice1.addEventListener("click", (e)=>{

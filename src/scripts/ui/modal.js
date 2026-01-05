@@ -1,5 +1,5 @@
 // ui/modal.js
-import { simulateTurn } from "../campaign/turnSystem.js";
+import { simulateTurn, commitTurn } from "../campaign/turnSystem.js";
 import { updateCharts } from "./netChart.js";
 
 export function initModal() {
@@ -14,6 +14,7 @@ export function initModal() {
   yes.addEventListener("click", () => {
     modal.classList.add("hidden");
     const delta = simulateTurn();
+    commitTurn();  // Commit changes after simulation
     updateCharts();
   });
 }

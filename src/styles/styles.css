@@ -225,7 +225,7 @@ ul{
   display: none; /* hidden by default */
   justify-content: center;
   align-items: center;
-  z-index: 10000;
+  z-index: 13000; /* Highest priority - above goal UI */
 }
 
 #confirmModal.show {
@@ -428,4 +428,54 @@ ul{
 
 .construction-row button:hover {
   background: #4A4A4A;
+}
+
+/* Goal System Styles - Highest Priority Layer */
+.goal-message {
+  animation: slideIn 0.5s ease-out;
+  z-index: 12000 !important; /* Above everything else */
+  position: relative;
+}
+
+.goal-message.success {
+  border-left: 4px solid var(--f_green);
+}
+
+.goal-message.failure {
+  border-left: 4px solid #ff4444;
+}
+
+/* Ensure choiceBox has highest priority when showing goals */
+#choiceBox.goal-active {
+  z-index: 11000 !important;
+}
+
+#choiceBoxHeader.goal-active {
+  z-index: 11001 !important;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.goal-option:hover {
+  background: #3a3a3a !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.active-goal {
+  transition: all 0.2s ease;
+}
+
+.active-goal:hover {
+  background: #3a3a3a;
+  transform: translateY(-1px);
 }

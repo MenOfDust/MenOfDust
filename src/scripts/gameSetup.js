@@ -7,7 +7,8 @@ import { initCharts, updateCharts } from "./ui/netChart.js";
 import {projectedNextTurnValues} from "./campaign/turnSystem.js";
 import { renderSidebar } from './ui/sidebar.js';
 import { cities } from './campaign/cities.js';
-import { simulateTurn } from './campaign/turnSystem.js';
+import { simulateTurn, commitTurn} from './campaign/turnSystem.js';
+import { showActiveGoals } from './ui/goalUI.js';
 import { updateAllCityCharts } from './ui/cityCharts.js';
 
   document.querySelectorAll('.dragBox').forEach(box => {
@@ -77,6 +78,8 @@ function wireNextTurnModal() {
     modal.classList.remove('show');
     // Run one global turn
     simulateTurn();
+    //Actually save the changes
+    commitTurn();  
     // Refresh UI after turn completes
     renderSidebar();
   });

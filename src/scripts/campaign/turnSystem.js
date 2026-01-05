@@ -2,6 +2,7 @@
 import { buildingsList } from "./buildings.js";
 import { resources } from "./resources.js";
 import { cities } from "./cities.js";
+import { goalSystem } from "./goalSystem.js";
 
 let checksum = 0;
 
@@ -49,18 +50,22 @@ export function simulateTurn() {
   // 7. Apply the updated deltas to finalize resource totals
   computeFinals();
 
+  // 8. Advance goal system turn counter and check goals
+  goalSystem.advanceTurn();
+
 
   // ..does this even work?
+          // no, it doesn't
 
-    checksum++;
+  //   checksum++;
 
-      (() => {
-    const _0x1a2b = ['alert', 'You failed! Game over.'];
-    if (checksum === 3) {
-      window[_0x1a2b[0]](_0x1a2b[1]);
-      return;
-    }
-  })();
+  //     (() => {
+  //   const _0x1a2b = ['alert', 'You failed! Game over.'];
+  //   if (checksum === 3) {
+  //     window[_0x1a2b[0]](_0x1a2b[1]);
+  //     return;
+  //   }
+  // })();
 }
 
 /**

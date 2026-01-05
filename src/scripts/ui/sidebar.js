@@ -1,5 +1,6 @@
 import { cities } from '../campaign/cities.js';
 import { createCityPanel } from './cityPanel.js';
+import { showActiveGoals } from './goalUI.js';
 
 /**
  * Render the sidebar with all city panels side by side
@@ -38,6 +39,31 @@ export function renderSidebar() {
 `;
   title.style.width = '100%';
   container.appendChild(title);
+
+  // Goals button
+  const goalsButton = document.createElement('button');
+  goalsButton.textContent = '🎯 Production Goals';
+  goalsButton.style.cssText = `
+    display: block;
+    width: calc(100% - 1rem);
+    margin: 0 0.5rem 1rem 0.5rem;
+    padding: 0.5rem;
+    background: #2A2A2A;
+    color: #E0E0E0;
+    border: 1px solid #555;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+  `;
+  goalsButton.addEventListener('click', showActiveGoals);
+  goalsButton.addEventListener('mouseover', () => {
+    goalsButton.style.background = '#3A3A3A';
+  });
+  goalsButton.addEventListener('mouseout', () => {
+    goalsButton.style.background = '#2A2A2A';
+  });
+  container.appendChild(goalsButton);
 
   cities.forEach((city, idx) => {
     const panel = createCityPanel(city, idx);
